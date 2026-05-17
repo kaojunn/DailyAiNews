@@ -28,3 +28,9 @@
 & 'C:\Users\86364\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' `
   '.\scripts\build_site.py'
 ```
+
+```powershell
+.\scripts\publish_daily.ps1
+```
+
+`publish_daily.ps1` 会在日报和站点文件有变化时自动提交并推送；如果还没配置 Git 远程仓库，它只会做本地提交，不会报错中断。
