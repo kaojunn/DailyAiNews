@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI News Digest"
+  short_description: "AI 与 GitHub 双源日报聚合助手"
+  default_prompt: "Use $ai-news-digest to compile today's AI and GitHub digest."

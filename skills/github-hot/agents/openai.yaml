@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Hot"
+  short_description: "GitHub 热榜、涨星榜与主题检索助手"
+  default_prompt: "Use $github-hot to summarize today's notable GitHub repositories."
