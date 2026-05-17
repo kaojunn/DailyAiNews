@@ -34,6 +34,13 @@ CATEGORY_LABELS = {
     "paper": "论文研究",
     "tip": "技巧与观点",
 }
+TAG_LABELS = {
+    "ai-models": "模型",
+    "ai-products": "产品",
+    "industry": "行业",
+    "paper": "论文",
+    "tip": "观点",
+}
 SECTION_CHOICES = {"ai", "github", "topics"}
 
 
@@ -85,6 +92,17 @@ def github_summary(item: dict) -> str:
     return trim(item.get("summary_zh") or item.get("description"), 72)
 
 
+def github_tag(item: dict) -> str:
+    text = f"{item.get('full_name', '')} {item.get('description', '')} {item.get('summary_zh', '')}".lower()
+    if "agent" in text or "skills" in text:
+        return "Agent"
+    if "llm" in text or "model" in text or "ollama" in text:
+        return "模型"
+    if "video" in text or "tts" in text or "speech" in text:
+        return "多媒体"
+    return "开源"
+
+
 def group_ai(items: list[dict]) -> dict[str, list[dict]]:
     groups: dict[str, list[dict]] = defaultdict(list)
     for item in items:
@@ -131,7 +149,7 @@ def build_markdown(
                 for item in items:
                     shown += 1
                     lines.append(
-                        f"{shown}. **{item['title']}** — {item['source']}（{fmt_time(item.get('publishedAt'))}）"
+                        f"{shown}. [{TAG_LABELS.get(item.get('category'), '其他')}] **{item['title']}** — {item['source']}（{fmt_time(item.get('publishedAt'))}）"
                     )
                     lines.append(f"   {trim(item.get('summary'))}")
                     lines.append(f"   {item['url']}")
@@ -145,7 +163,7 @@ def build_markdown(
             for idx, item in enumerate(today_items, 1):
                 stars = f"{item['stars']:,}" if item.get("stars") is not None else "未知"
                 today = f" +{item['stars_today']:,}/24h" if item.get("stars_today") is not None else ""
-                lines.append(f"{idx}. **{item['full_name']}** — ⭐ {stars}{today}")
+                lines.append(f"{idx}. [{github_tag(item)}] **{item['full_name']}** — ⭐ {stars}{today}")
                 lines.append(f"   {github_summary(item)}")
                 lines.append(f"   {item['url']}")
             lines.append("")
@@ -171,7 +189,7 @@ def build_markdown(
                 lines.append("")
                 continue
             for idx, item in enumerate(items, 1):
-                lines.append(f"{idx}. **{item['full_name']}** — ⭐ {item['stars']:,}")
+                lines.append(f"{idx}. [{github_tag(item)}] **{item['full_name']}** — ⭐ {item['stars']:,}")
                 lines.append(f"   {github_summary(item)}")
                 lines.append(f"   {item['url']}")
             lines.append("")
