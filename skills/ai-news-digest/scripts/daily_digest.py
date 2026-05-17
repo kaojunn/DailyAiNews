@@ -26,6 +26,7 @@ GITHUB_HOT = BASE_DIR / "github-hot" / "scripts" / "github_hot.py"
 REPORTS_DIR = PROJECT_DIR / "reports"
 INDEX_PATH = REPORTS_DIR / "README.md"
 SITE_BUILDER = PROJECT_DIR / "scripts" / "build_site.py"
+POSTER_BUILDER = PROJECT_DIR / "scripts" / "build_poster.py"
 CST = timezone(timedelta(hours=8))
 CATEGORY_LABELS = {
     "ai-models": "模型发布/更新",
@@ -290,6 +291,7 @@ def main() -> int:
         path.write_text(markdown, encoding="utf-8")
         write_index()
         subprocess.run([sys.executable, str(SITE_BUILDER)], check=True)
+        subprocess.run([sys.executable, str(POSTER_BUILDER)], check=True)
         print(f"\n[written] {path}", file=sys.stderr)
         print(f"[index] {INDEX_PATH}", file=sys.stderr)
     return 0

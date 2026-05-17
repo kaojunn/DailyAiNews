@@ -1,27 +1,26 @@
 :root {
   color-scheme: light;
-  --bg: #f5f3ee;
-  --paper: #ffffff;
-  --ink: #171717;
-  --muted: #66655f;
-  --line: #dfddd7;
-  --accent: #14532d;
-  --accent-soft: #dcefe1;
-  --coral: #c96d52;
-  --blue: #385f89;
+  --bg: #ece7dc;
+  --paper: #f7f2e8;
+  --ink: #171410;
+  --muted: #5d564d;
+  --line: #2e2923;
+  --accent: #201b16;
+  --accent-soft: #e4ddcf;
+  --coral: #5f4a3a;
+  --blue: #3d3a35;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: "SimSun", "Songti SC", "STSong", serif;
   line-height: 1.65;
 }
 .topbar {
   border-bottom: 1px solid var(--line);
-  background: rgba(247,247,244,.92);
-  backdrop-filter: blur(10px);
+  background: rgba(247,242,232,.96);
   position: sticky;
   top: 0;
 }
@@ -33,6 +32,7 @@ body {
   color: var(--ink);
   text-decoration: none;
   font-weight: 700;
+  letter-spacing: 0;
 }
 .page {
   max-width: 860px;
@@ -45,7 +45,8 @@ body {
   overflow: hidden;
   border-radius: 8px;
   margin: 8px 0 22px;
-  background: #ece6db;
+  background: #ded5c5;
+  border: 1px solid var(--line);
 }
 .hero-image {
   width: 100%;
@@ -62,7 +63,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: linear-gradient(90deg, rgba(245,243,238,.96), rgba(245,243,238,.88), rgba(245,243,238,0));
+  background: linear-gradient(90deg, rgba(247,242,232,.98), rgba(247,242,232,.9), rgba(247,242,232,0));
 }
 .eyebrow { color: var(--accent); font-weight: 700; margin: 0 0 10px; }
 h1 {
@@ -76,7 +77,7 @@ h1 {
   background: var(--accent);
   color: #fff;
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: 0;
   text-decoration: none;
   font-weight: 600;
 }
@@ -89,7 +90,7 @@ h1 {
 .metrics div {
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 16px;
 }
 .metrics strong {
@@ -111,7 +112,7 @@ h1 {
 .spotlight-grid article {
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 16px;
 }
 .spotlight-grid small {
@@ -140,7 +141,7 @@ h1 {
   gap: 12px;
   padding: 16px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--paper);
   color: var(--ink);
   text-decoration: none;
@@ -156,9 +157,10 @@ h1 {
   background: var(--accent-soft);
   color: var(--accent);
   padding: 6px 10px;
-  border-radius: 999px;
+  border-radius: 0;
   font-size: 14px;
   text-decoration: none;
+  border: 1px solid var(--line);
 }
 .report h1 { font-size: 30px; }
 .report h2 {
@@ -175,15 +177,16 @@ h1 {
 .report {
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.05);
 }
 .tag {
   display: inline-flex;
   align-items: center;
-  border-radius: 999px;
+  border-radius: 0;
   padding: 2px 8px;
   margin-right: 6px;
-  background: #eef1f5;
+  background: #ece4d5;
   color: var(--blue);
   font-size: 12px;
   font-weight: 700;
@@ -240,7 +243,7 @@ a {
     width: 100%;
     justify-content: flex-end;
     padding: 20px;
-    background: linear-gradient(180deg, rgba(245,243,238,0), rgba(245,243,238,.78), rgba(245,243,238,.98));
+    background: linear-gradient(180deg, rgba(247,242,232,0), rgba(247,242,232,.78), rgba(247,242,232,.98));
   }
   .metrics {
     grid-template-columns: 1fr;
