@@ -81,6 +81,10 @@ def trim(text: str | None, limit: int = 88) -> str:
     return text if len(text) <= limit else text[: limit - 1] + "…"
 
 
+def github_summary(item: dict) -> str:
+    return trim(item.get("summary_zh") or item.get("description"), 72)
+
+
 def group_ai(items: list[dict]) -> dict[str, list[dict]]:
     groups: dict[str, list[dict]] = defaultdict(list)
     for item in items:
@@ -142,7 +146,7 @@ def build_markdown(
                 stars = f"{item['stars']:,}" if item.get("stars") is not None else "未知"
                 today = f" +{item['stars_today']:,}/24h" if item.get("stars_today") is not None else ""
                 lines.append(f"{idx}. **{item['full_name']}** — ⭐ {stars}{today}")
-                lines.append(f"   {trim(item.get('description'))}")
+                lines.append(f"   {github_summary(item)}")
                 lines.append(f"   {item['url']}")
             lines.append("")
         else:
@@ -168,7 +172,7 @@ def build_markdown(
                 continue
             for idx, item in enumerate(items, 1):
                 lines.append(f"{idx}. **{item['full_name']}** — ⭐ {item['stars']:,}")
-                lines.append(f"   {trim(item.get('description'))}")
+                lines.append(f"   {github_summary(item)}")
                 lines.append(f"   {item['url']}")
             lines.append("")
 

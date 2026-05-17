@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REPORTS_DIR = ROOT / "reports"
 SITE_DIR = ROOT / "site"
 ASSETS_DIR = SITE_DIR / "assets"
+HERO_IMAGE = "./assets/hero-editorial.webp"
 
 
 def inline(text: str) -> str:
@@ -134,10 +135,19 @@ def build_index(reports: list[Path]) -> None:
         )
     body = f"""
 <section class="hero">
-  <p class="eyebrow">AI + GitHub 双源日报</p>
-  <h1>每天看清 AI 圈与开源圈的真正动向</h1>
-  <p class="lede">聚合 AI HOT 精选、GitHub 今日热榜和涨星最快项目，适合在手机上快速扫一遍。</p>
-  <a class="primary" href="{latest_link}">查看最新日报</a>
+  <img class="hero-image" src="{HERO_IMAGE}" alt="">
+  <div class="hero-copy">
+    <p class="eyebrow">AI + GitHub 双源日报</p>
+    <h1>每天看清 AI 圈与开源圈的真正动向</h1>
+    <p class="lede">聚合 AI HOT 精选、GitHub 今日热榜和涨星最快项目，适合在手机上快速扫一遍。</p>
+    <a class="primary" href="{latest_link}">查看最新日报</a>
+  </div>
+</section>
+
+<section class="metrics">
+  <div><strong>{len(reports)}</strong><span>累计日报</span></div>
+  <div><strong>AI</strong><span>热点精选</span></div>
+  <div><strong>GitHub</strong><span>开源雷达</span></div>
 </section>
 
 <section>
@@ -169,13 +179,15 @@ def write_assets() -> None:
         """
 :root {
   color-scheme: light;
-  --bg: #f7f7f4;
+  --bg: #f5f3ee;
   --paper: #ffffff;
   --ink: #171717;
   --muted: #66655f;
   --line: #dfddd7;
   --accent: #14532d;
   --accent-soft: #dcefe1;
+  --coral: #c96d52;
+  --blue: #385f89;
 }
 * { box-sizing: border-box; }
 body {
@@ -206,7 +218,31 @@ body {
   margin: 0 auto;
   padding: 24px 20px 56px;
 }
-.hero { padding: 18px 0 28px; }
+.hero {
+  min-height: 360px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  margin: 8px 0 22px;
+  background: #ece6db;
+}
+.hero-image {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: cover;
+  display: block;
+}
+.hero-copy {
+  position: absolute;
+  inset: 0;
+  width: min(58%, 500px);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(90deg, rgba(245,243,238,.96), rgba(245,243,238,.88), rgba(245,243,238,0));
+}
 .eyebrow { color: var(--accent); font-weight: 700; margin: 0 0 10px; }
 h1 {
   font-size: clamp(28px, 5vw, 42px);
@@ -222,6 +258,26 @@ h1 {
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 18px 0 28px;
+}
+.metrics div {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+}
+.metrics strong {
+  display: block;
+  font-size: 24px;
+}
+.metrics span {
+  color: var(--muted);
+  font-size: 14px;
 }
 .section-head {
   display: flex;
@@ -273,6 +329,11 @@ h1 {
 .report ol {
   padding-left: 22px;
 }
+.report {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
 .report li {
   margin: 14px 0 4px;
 }
@@ -292,6 +353,21 @@ a {
   .brand { padding-inline: 16px; }
   .report h1 { font-size: 26px; }
   .detail { margin-left: 0; }
+  .hero {
+    min-height: 420px;
+  }
+  .hero-image {
+    min-height: 420px;
+  }
+  .hero-copy {
+    width: 100%;
+    justify-content: flex-end;
+    padding: 20px;
+    background: linear-gradient(180deg, rgba(245,243,238,0), rgba(245,243,238,.78), rgba(245,243,238,.98));
+  }
+  .metrics {
+    grid-template-columns: 1fr;
+  }
 }
 """.strip()
         + "\n",

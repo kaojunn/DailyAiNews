@@ -49,6 +49,24 @@ def clean_description(text: str) -> str:
     return re.sub(r"^Star\s+\S+\s*/\s*\S+\s+", "", text)
 
 
+def summarize_repo_zh(full_name: str, description: str) -> str:
+    text = f"{full_name} {description}".lower()
+    rules = [
+        (("agent", "coding agent", "skills"), "围绕智能体工作流的开源项目，适合关注自动化开发与 Agent 能力。"),
+        (("llm", "language model", "ollama"), "面向大模型使用、部署或推理的开源项目。"),
+        (("video", "tts", "speech"), "聚焦多媒体生成或处理能力的开源项目。"),
+        (("runtime", "bundler", "package manager"), "面向开发效率的基础工具项目。"),
+        (("wifi", "spatial intelligence"), "把现实世界信号转成可用智能能力的项目。"),
+        (("machine learning", "deep learning", "tensorflow"), "机器学习基础设施或框架项目。"),
+    ]
+    for needles, summary in rules:
+        if any(needle in text for needle in needles):
+            return summary
+    if description:
+        return "近期在 GitHub 上受到较高关注的开源项目。"
+    return "近期受到关注的开源仓库。"
+
+
 def parse_trending(limit: int) -> list[dict]:
     html = fetch_text(TRENDING_URL)
     articles = re.findall(r"<article[^>]*Box-row[^>]*>(.*?)</article>", html, flags=re.S)
@@ -67,6 +85,10 @@ def parse_trending(limit: int) -> list[dict]:
                 "full_name": full_name,
                 "url": f"https://github.com/{full_name}",
                 "description": clean_description(description_match.group(1)) if description_match else "",
+                "summary_zh": summarize_repo_zh(
+                    full_name,
+                    clean_description(description_match.group(1)) if description_match else "",
+                ),
                 "language": compact(language_match.group(1)) if language_match else None,
                 "stars": int(stars_match.group(1).replace(",", "")) if stars_match else None,
                 "stars_today": int(today_match.group(1).replace(",", "")) if today_match else None,
@@ -90,6 +112,7 @@ def search_repositories(query: str, limit: int) -> list[dict]:
             "full_name": item["full_name"],
             "url": item["html_url"],
             "description": item.get("description") or "",
+            "summary_zh": summarize_repo_zh(item["full_name"], item.get("description") or ""),
             "language": item.get("language"),
             "stars": item["stargazers_count"],
             "forks": item["forks_count"],
