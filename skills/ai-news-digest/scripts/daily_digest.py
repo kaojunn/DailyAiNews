@@ -261,24 +261,28 @@ def main() -> int:
     if "ai" in sections:
         try:
             ai_items = fetch_aihot(args.ai_limit)
-        except Exception:
+        except Exception as exc:
+            print(f"[warn] AI HOT fetch failed: {exc}", file=sys.stderr)
             ai_items = []
 
     if "github" in sections:
         try:
             today_items = run_github_hot("today", args.github_limit)
-        except Exception:
+        except Exception as exc:
+            print(f"[warn] GitHub today fetch failed: {exc}", file=sys.stderr)
             today_items = []
         try:
             growth_items = run_github_hot("growth24h", args.growth_limit)
-        except Exception:
+        except Exception as exc:
+            print(f"[warn] GitHub growth24h fetch failed: {exc}", file=sys.stderr)
             growth_items = []
 
     if "topics" in sections:
         for topic in args.topic:
             try:
                 topic_items[topic] = run_github_hot("search", args.topic_limit, topic)
-            except Exception:
+            except Exception as exc:
+                print(f"[warn] GitHub topic fetch failed for {topic!r}: {exc}", file=sys.stderr)
                 topic_items[topic] = []
 
     today = datetime.now(CST).strftime("%Y-%m-%d")

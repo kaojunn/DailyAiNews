@@ -23,12 +23,18 @@ if (-not $CommitMessage) {
 }
 
 git add reports site
+if ($LASTEXITCODE -ne 0) {
+    throw "git add failed with exit code $LASTEXITCODE"
+}
 if (-not (git diff --cached --name-only)) {
     Write-Output "No report or site changes to publish."
     exit 0
 }
 
 git commit -m $CommitMessage
+if ($LASTEXITCODE -ne 0) {
+    throw "git commit failed with exit code $LASTEXITCODE"
+}
 
 $remote = git remote
 if (-not $remote) {
@@ -38,4 +44,7 @@ if (-not $remote) {
 
 $branch = git branch --show-current
 git push origin $branch
+if ($LASTEXITCODE -ne 0) {
+    throw "git push failed with exit code $LASTEXITCODE"
+}
 Write-Output "Published changes to origin/$branch."
